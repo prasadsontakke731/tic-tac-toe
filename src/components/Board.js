@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { Box } from "./Box"
+import Box from "./Box"
+
 import "./Board.css"
 
-export const Board = ({ board, onClick }) => {
+function Board({ board, onClick }) {
     return (
         <div className="board">
             {
@@ -14,3 +15,4 @@ export const Board = ({ board, onClick }) => {
         </div>
     )
 }
+export default Board

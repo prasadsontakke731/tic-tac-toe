@@ -2,7 +2,7 @@ import React from 'react'
 
 import "./ScoreBoard.css"
 
-export const ScoreBoard = ({ xPlaying }) => {
+function ScoreBoard({ xPlaying }) {
 
     let scoreX = JSON.parse(localStorage.getItem("XWin"))
     let scoreO = JSON.parse(localStorage.getItem("OWin"))
@@ -15,3 +15,4 @@ export const ScoreBoard = ({ xPlaying }) => {
         </div>
     )
 }
+export default ScoreBoard

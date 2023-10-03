@@ -2,7 +2,7 @@ import React from 'react';
 
 import "./ResetButton.css";
 
-export const ResetButton = ({ resetBoard, resetResult }) => {
+function ResetButton({ resetBoard, resetResult }) {
     return (
         <>
             <button className="reset-board-btn" onClick={resetBoard}>Reset Board</button>
@@ -10,3 +10,4 @@ export const ResetButton = ({ resetBoard, resetResult }) => {
         </>
     )
 }
+export default ResetButton;

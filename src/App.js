@@ -1,14 +1,17 @@
 
-import { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import './App.css';
-import { ScoreBoard } from './components/ScoreBoard';
-import { Board } from './components/Board';
-import { ResetButton } from './components/ResetButton';
+import Login from './components/Login';
 
+import { useAuth0 } from "@auth0/auth0-react";
 
-
+const Board = React.lazy(() => import("./components/Board"))
+const ScoreBoard = React.lazy(() => import("./components/ScoreBoard"))
+const ResetButton = React.lazy(() => import("./components/ResetButton"))
 function App() {
 
+  const { loginWithRedirect, logout, isAuthenticated, user, isLoading
+  } = useAuth0();
 
   const WIN_CONDITIONS = [
     [0, 1, 2],
@@ -47,16 +50,22 @@ function App() {
     if (winner) {
       if (winner === "O") {
         let { oScore } = scores;
-        oScore += 1;
-        localStorage.setItem("OWin", JSON.stringify(oScore))
-        console.log(oScore);
-        setScores({ ...scores, oScore })
+        if (isAuthenticated) {
+
+          oScore += 1;
+          localStorage.setItem("OWin", JSON.stringify(oScore))
+          console.log(oScore);
+          setScores({ ...scores, oScore })
+        }
       } else {
         let { xScore } = scores;
-        xScore += 1;
-        localStorage.setItem("XWin", JSON.stringify(xScore))
-        console.log(xScore);
-        setScores({ ...scores, xScore })
+        if (isAuthenticated) {
+          xScore += 1;
+          localStorage.setItem("XWin", JSON.stringify(xScore))
+          console.log(xScore);
+          setScores({ ...scores, xScore })
+        }
+
       }
     }
 
@@ -86,11 +95,32 @@ function App() {
     localStorage.setItem("OWin", 0)
   }
 
+  window.addEventListener("load", () => console.log("loaded"))
+
+
+
   return (
     <div className="App">
-      <ScoreBoard scores={scores} xPlaying={xPlaying} />
-      <Board board={board} onClick={gameOver ? resetBoard : handleBoxClick} />
-      <ResetButton resetBoard={resetBoard} resetResult={resetResult} />
+
+      {
+        isAuthenticated &&
+        <div className='userInfo'>
+          <img src={user.picture} alt={user.name} />
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      }
+      {
+        isAuthenticated ? <div className='userInfo'><button className='btn-out' onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Logout</button></div>
+
+          : <div className="userInfo"><button className='btn' onClick={() => loginWithRedirect()}>Log In</button></div>
+      }
+      <Suspense fallback={<p>This is Loading...</p>}>
+        <ScoreBoard scores={scores} xPlaying={xPlaying} />
+        <Board board={board} onClick={gameOver ? resetBoard : handleBoxClick} />
+        <ResetButton resetBoard={resetBoard} resetResult={resetResult} />
+      </Suspense>
+      {/* <Login /> */}
     </div>
   );
 }

@@ -7,3 +7,29 @@ body{
     background-color: #efefef;
     font-family: "Fredoka",sans-serif;
 }
+.btn-out{
+    padding: 10px 20px;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 20px;
+    margin-left: 20px;
+}
+.btn-style{
+    display: flex;
+    justify-content: end;
+    margin-right: 20px;
+}
+.userInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.userInfo img{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+
+}
