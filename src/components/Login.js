@@ -6,13 +6,11 @@ function Login() {
     const email = useRef()
     const password = useRef()
 
-    const handleSubmit = () => {
 
-    }
     return (
 
         <div className="login-container">
-            <form className="login-form" onSubmit={handleSubmit} >
+            <form className="login-form" >
                 <h2>Login</h2>
                 <div className="form-group">
                     <label>Email:</label>

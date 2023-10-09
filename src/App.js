@@ -10,7 +10,7 @@ const ScoreBoard = React.lazy(() => import("./components/ScoreBoard"))
 const ResetButton = React.lazy(() => import("./components/ResetButton"))
 function App() {
 
-  const { loginWithRedirect, logout, isAuthenticated, user, isLoading
+  const { loginWithRedirect, logout, isAuthenticated, user
   } = useAuth0();
 
   const WIN_CONDITIONS = [
@@ -69,7 +69,7 @@ function App() {
       }
     }
 
-    // Step 3: Change active player
+    //  Change active player
     setXPlaying(!xPlaying);
   }
 
@@ -97,6 +97,23 @@ function App() {
 
   window.addEventListener("load", () => console.log("loaded"))
 
+  // login Game
+  const loginGame = () => {
+    loginWithRedirect()
+
+
+
+  }
+  // logout game
+  const logoutGame = () => {
+    logout({ logoutParams: { returnTo: window.location.origin } })
+
+  }
+  // 
+  if (!isAuthenticated) {
+    localStorage.setItem("XWin", 0)
+    localStorage.setItem("OWin", 0)
+  }
 
 
   return (
@@ -111,16 +128,16 @@ function App() {
         </div>
       }
       {
-        isAuthenticated ? <div className='userInfo'><button className='btn-out' onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Log Logout</button></div>
+        isAuthenticated ? <div className='userInfo'><button className='btn-out' onClick={logoutGame}>Log Logout</button></div>
 
-          : <div className="userInfo"><button className='btn' onClick={() => loginWithRedirect()}>Log In</button></div>
+          : <div className="userInfo"><button className='btn' onClick={loginGame}>Log In</button></div>
       }
       <Suspense fallback={<p>This is Loading...</p>}>
         <ScoreBoard scores={scores} xPlaying={xPlaying} />
         <Board board={board} onClick={gameOver ? resetBoard : handleBoxClick} />
         <ResetButton resetBoard={resetBoard} resetResult={resetResult} />
       </Suspense>
-      {/* <Login /> */}
+
     </div>
   );
 }
